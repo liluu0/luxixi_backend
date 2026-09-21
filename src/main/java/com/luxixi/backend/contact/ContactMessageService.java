@@ -7,8 +7,10 @@ public class ContactMessageService {
     private final ContactMessageRepository repository;
     public ContactMessageService(ContactMessageRepository repository){this.repository=repository;}
     @Transactional public ContactMessageResponse create(ContactMessageRequest request){
-        if(repository.existsByVisitorNameAndMessageAndSubmittedAtAfter(request.visitorName(), request.message(), OffsetDateTime.now().minusMinutes(5))) throw new DuplicateMessageException();
-        ContactMessage entity=new ContactMessage(); entity.setVisitorName(request.visitorName().trim()); entity.setMessage(request.message().trim());
+        String visitorName = ContactTextPolicy.normalizeName(request.visitorName());
+        String message = ContactTextPolicy.normalizeMessage(request.message());
+        if(repository.existsByVisitorNameAndMessageAndSubmittedAtAfter(visitorName, message, OffsetDateTime.now().minusMinutes(5))) throw new DuplicateMessageException();
+        ContactMessage entity=new ContactMessage(); entity.setVisitorName(visitorName); entity.setMessage(message);
         return ContactMessageResponse.from(repository.save(entity));
     }
     public static class DuplicateMessageException extends RuntimeException {}

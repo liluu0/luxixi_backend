@@ -1,5 +1,17 @@
 server:
   port: ${PORT:8080}
+  tomcat:
+    max-connections: ${SERVER_MAX_CONNECTIONS:200}
+    accept-count: ${SERVER_ACCEPT_COUNT:100}
+    threads:
+      max: ${SERVER_MAX_THREADS:100}
+      min-spare: ${SERVER_MIN_SPARE_THREADS:10}
+    max-swallow-size: ${SERVER_MAX_SWALLOW_SIZE:16KB}
+    max-http-form-post-size: ${SERVER_MAX_FORM_POST_SIZE:16KB}
+    connection-timeout: ${SERVER_CONNECTION_TIMEOUT:5s}
+    keep-alive-timeout: ${SERVER_KEEP_ALIVE_TIMEOUT:5s}
+    max-keep-alive-requests: ${SERVER_MAX_KEEP_ALIVE_REQUESTS:100}
+    max-http-request-header-size: ${SERVER_MAX_REQUEST_HEADER_SIZE:8KB}
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/luxixi}
@@ -14,3 +26,11 @@ spring:
 management.endpoints.web.exposure.include: health,info
 app.cors.allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173,http://localhost:5175,http://127.0.0.1:5175}
 app.geo.enabled: ${GEO_ENABLED:true}
+app.security.rate-limit.per-ip-per-minute: ${CONTACT_RATE_LIMIT_PER_IP:5}
+app.security.rate-limit.global-per-minute: ${CONTACT_RATE_LIMIT_GLOBAL:120}
+app.security.rate-limit.max-concurrent: ${CONTACT_RATE_LIMIT_CONCURRENT:16}
+app.security.request.max-body-bytes: ${CONTACT_MAX_BODY_BYTES:16384}
+app.security.trust-forwarded-headers: ${TRUST_FORWARDED_HEADERS:false}
+app.security.visit-rate-limit.per-ip-per-minute: ${VISIT_RATE_LIMIT_PER_IP:30}
+app.security.visit-rate-limit.global-per-minute: ${VISIT_RATE_LIMIT_GLOBAL:600}
+app.security.visit-rate-limit.max-concurrent: ${VISIT_RATE_LIMIT_CONCURRENT:8}
