@@ -9,6 +9,6 @@ import java.time.Clock;
 public class ClockConfig {
     @Bean
     public Clock applicationClock() {
-        return Clock.systemUTC();
+        return Clock.system(BeijingTime.ZONE_ID);
     }
 }
