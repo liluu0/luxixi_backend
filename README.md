@@ -13,4 +13,4 @@
 请求示例：`{"visitorName":"访客","message":"你好"}`
 
 数据库表结构由 Flyway 在应用启动时自动创建，应用使用 `ddl-auto=validate` 防止 Hibernate 修改表结构。
-时间字段统一保存为北京时间的本地时间，精确到秒，数据库字段使用 `timestamp without time zone`，避免不同数据库连接的时区设置改变显示结果。
+时间字段统一保存为北京时间的本地时间，精确到秒，数据库字段使用 `timestamp without time zone`。Hibernate 通过 JDBC 4.2 直接写入 `LocalDateTime`，不配置 `hibernate.jdbc.time_zone`，避免已经生成的北京时间再次发生时区换算；不同连接时区读取到的年月日时分秒保持一致。
